@@ -1,0 +1,87 @@
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Multi-Feature Air Quality Prediction</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+</head>
+<style>
+    .result-box {
+        background: white; 
+        border-radius: 24px; 
+        box-shadow: 0 15px 30px rgba(217, 100, 46, 0.1); 
+        padding: 20px; 
+        margin-top: 30px;
+        text-align: center; 
+    }
+    
+    .result-box h4 {
+        font-weight: 600;
+        color: #555;
+        margin-bottom: 10px;
+    }
+    
+    .result-value {
+        font-size: 2rem;
+        font-weight: 700;
+        color: #4bc30b;
+    }
+</style>
+<body class="bg-blue-50 flex items-center justify-center min-h-screen">
+    <div class="bg-white rounded-lg shadow-lg p-8 w-full max-w-md">
+        <div class="bg-blue-600 text-white text-center rounded-t-lg py-4">
+            <h1 class="text-2xl font-bold">Multi-Feature Air Quality Prediction</h1>
+            <p>Analyze multiple environmental factors to predict air quality index</p>
+        </div>
+        <form class="space-y-4 mt-4" action="/predict_multi" method="post">
+            <div>
+                <label class="block text-gray-700 font-semibold">Traffic Levels</label>
+                <div class="relative">
+                    <input type="text" id="traffic" name="Traffic_Levels" class="w-full border border-gray-300 rounded-lg p-2 pr-10" required>
+                    <span class="absolute right-10 top-2 text-gray-500">Typical range: 10-100</span>
+                    <i class="fas fa-car absolute right-2 top-1/2 transform -translate-y-1/2 text-gray-500"></i>
+                </div>
+            </div>
+            <div>
+                <label class="block text-gray-700 font-semibold">Temperature (°C)</label>
+                <div class="relative">
+                    <input type="text" id="temperature" name="Temperature_C" class="w-full border border-gray-300 rounded-lg p-2 pr-10" required>
+                    <span class="absolute right-10 top-2 text-gray-500">Typical range: 15-45°C</span>
+                    <i class="fas fa-thermometer-half absolute right-2 top-1/2 transform -translate-y-1/2 text-gray-500"></i>
+                </div>
+            </div>
+            <div>
+                <label class="block text-gray-700 font-semibold">Humidity (%)</label>
+                <div class="relative">
+                    <input type="text" id="humidity" name="Humidity_%"  class="w-full border border-gray-300 rounded-lg p-2 pr-10" required>
+                    <span class="absolute right-10 top-2 text-gray-500">Typical range: 20-90%</span>
+                    <i class="fas fa-tint absolute right-2 top-1/2 transform -translate-y-1/2 text-gray-500"></i>
+                </div>
+            </div>
+            <div>
+                <label class="block text-gray-700 font-semibold">Factory Emissions</label>
+                <div class="relative">
+                    <input type="text" id="emissions" name="Factory_Emissions" class="w-full border border-gray-300 rounded-lg p-2 pr-10" required>
+                    <span class="absolute right-10 top-2 text-gray-500">Typical range: 50-500</span>
+                    <i class="fas fa-industry absolute right-2 top-1/2 transform -translate-y-1/2 text-gray-500"></i>
+                </div>
+            </div>
+            <button type="submit" class="w-full bg-blue-600 text-white rounded-lg py-2 mt-4 flex items-center justify-center">
+                Predict Air Quality <i class="fas fa-arrow-right ml-2"></i>
+            </button>
+        </form>
+        {% if prediction %}
+            <div class="result-box">
+                <h4>Prediction Result</h4>
+                <div class="result-value">{{ prediction }}</div>
+            </div>
+        {% endif %}
+        <div class="mt-4 text-blue-600">
+            <a href="/" class="flex items-center">
+                <i class="fas fa-arrow-left mr-2"></i> Back to Home
+            </a>
+        </div>
+    </div>
+</body>
+</html>
