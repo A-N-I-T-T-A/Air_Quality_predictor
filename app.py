@@ -14,6 +14,21 @@ poly_single = joblib.load("poly_transform_single.pkl")
 # Selected features for multi-feature model
 selected_features = ["Traffic_Levels", "Temperature_C", "Humidity_%", "Factory_Emissions"]
 
+# AQI classification function
+def classify_aqi(aqi):
+    if aqi <= 50:
+        return "Good"
+    elif aqi <= 100:
+        return "Moderate"
+    elif aqi <= 150:
+        return "Unhealthy for Sensitive Groups"
+    elif aqi <= 200:
+        return "Unhealthy"
+    elif aqi <= 300:
+        return "Very Unhealthy"
+    else:
+        return "Hazardous"
+
 @app.route("/")
 def home():
     return render_template("index.html")  
@@ -33,8 +48,9 @@ def predict_multi():
         input_df = pd.DataFrame([input_data])  
         input_data_poly = poly_multi.transform(input_df)  
         prediction = model_multi.predict(input_data_poly)[0]
-
-        return render_template("multi.html", prediction=f"Predicted AQI: {prediction:.2f}")
+        aqi_category = classify_aqi(prediction)
+        
+        return render_template("multi.html", prediction=f"Predicted AQI: {prediction:.2f} ({aqi_category})")
     
     except Exception as e:
         return render_template("multi.html", prediction=f"Error: {str(e)}")
@@ -46,8 +62,9 @@ def predict_single():
         input_df = pd.DataFrame([[factory_emission]], columns=["Factory_Emissions"])  
         input_data_poly = poly_single.transform(input_df)  
         prediction = model_single.predict(input_data_poly)[0]
+        aqi_category = classify_aqi(prediction)
 
-        return render_template("single.html", prediction=f"Predicted AQI: {prediction:.2f}")
+        return render_template("single.html", prediction=f"Predicted AQI: {prediction:.2f} ({aqi_category})")
     
     except Exception as e:
         return render_template("single.html", prediction=f"Error: {str(e)}")
